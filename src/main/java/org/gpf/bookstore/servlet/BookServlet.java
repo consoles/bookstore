@@ -19,7 +19,7 @@ public class BookServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -6832343822821250410L;
 
-	public void getBooks(HttpServletRequest request, HttpServletResponse response)
+	protected void getBooks(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		String pageNoStr = request.getParameter("pageNo");
@@ -53,6 +53,30 @@ public class BookServlet extends HttpServlet {
 		request.getRequestDispatcher("/WEB-INF/jsps/books.jsp").forward(request, response);
 	}
 
+	protected void getBook(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		String idStr = request.getParameter("id");
+		int id = -1;
+		try {
+			id = Integer.parseInt(idStr);
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		}
+		Book book = null;
+		// 性能优化
+		if (id > 0) {
+			BookService bookService = new BookService();
+			book = bookService.getBook(id);
+		}
+		
+		if (book == null) {
+			response.sendRedirect(request.getContextPath() + "/error-1.jsp");
+			return;
+		}
+		request.setAttribute("book", book);
+		request.getRequestDispatcher("/WEB-INF/jsps/book.jsp").forward(request, response);
+	}
+	
 	@Override
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {

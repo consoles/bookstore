@@ -13,4 +13,8 @@ public class BookService {
 	public Page<Book> getPage(CriteriaBook criteriaBook){
 		return bookDao.getPage(criteriaBook);
 	}
+
+	public Book getBook(int id) {
+		return bookDao.getBook(id);
+	}
 }
