@@ -25,7 +25,7 @@
 		您已经将${param.title }放入到购物车中！
 	</c:if>
 	<c:if test="${!empty sessionScope.ShoppingCart.books }">
-		您的购物车中有${sessionScope.ShoppingCart.bookNumber }本书，<a href="books.do?method=toCartPage&pageNo=${bookpage.pageNo }">查看购物车</a>
+		您的购物车中有${sessionScope.ShoppingCart.bookNumber }本书，<a href="books.do?method=forwardPage&destPage=cart.jsp&pageNo=${bookpage.pageNo }">查看购物车</a>
 	</c:if>
 	<table>
 		<c:forEach items="${bookpage.list }" var="book">

@@ -1,11 +1,12 @@
 package org.gpf.bookstore.dao.impl;
 
-import static org.junit.Assert.fail;
-
+import java.sql.Connection;
 import java.sql.Date;
 import java.util.List;
 
+import org.gpf.bookstore.db.JDBCUtils;
 import org.gpf.bookstore.domain.Book;
+import org.gpf.bookstore.web.ConnectionContext;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -15,6 +16,8 @@ public class BaseDaoTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		Connection connection = JDBCUtils.getConnection();
+		ConnectionContext.getInstance().bind(connection);
 		baseDao = new BookDaoImpl();
 	}
 

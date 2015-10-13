@@ -1,5 +1,6 @@
 package org.gpf.bookstore.dao.impl;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -48,7 +49,16 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao{
 	@Override
 	public void batchUpdateStoreNumberAndSalesAmount(
 			Collection<ShoppingCartItem> items) {
-		
+		String sql = "UPDATE mybooks SET Salesamount = Salesamount + ?,Storenumber = Storenumber - ? WHERE id = ?";
+		Object[][] params = null;
+		List<ShoppingCartItem> scits = new ArrayList<>(items);
+		params = new Object[items.size()][3];
+		for (int i = 0; i < items.size(); i++) {
+			params[i][0] = scits.get(i).getQuantity();
+			params[i][1] = scits.get(i).getQuantity();
+			params[i][2] = scits.get(i).getBook().getId();
+		}
+		batch(sql, params);
 	}
 
 }

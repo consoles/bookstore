@@ -11,9 +11,14 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.gpf.bookstore.domain.Account;
 import org.gpf.bookstore.domain.Book;
 import org.gpf.bookstore.domain.ShoppingCart;
+import org.gpf.bookstore.domain.ShoppingCartItem;
+import org.gpf.bookstore.domain.User;
+import org.gpf.bookstore.service.AccountService;
 import org.gpf.bookstore.service.BookService;
+import org.gpf.bookstore.service.UserService;
 import org.gpf.bookstore.web.BookStoreWebUtils;
 import org.gpf.bookstore.web.CriteriaBook;
 import org.gpf.bookstore.web.Page;
@@ -112,16 +117,23 @@ public class BookServlet extends HttpServlet {
 		
 	}
 	
-	protected void toCartPage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
+	/**
+	 * 转发页面
+	 * @param request
+	 * @param response
+	 * @throws ServletException
+	 * @throws IOException
+	 */
+	protected void forwardPage(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException {
 		
-		request.getRequestDispatcher("/WEB-INF/jsps/cart.jsp").forward(request, response);
+		String destPage = request.getParameter("destPage");
+		request.getRequestDispatcher("/WEB-INF/jsps/" + destPage).forward(request, response);
 	}
 	
 	protected void remove(HttpServletRequest request,HttpServletResponse response) throws ServletException, IOException{
 		
 		String idStr = request.getParameter("id");
 		int id = -1;
-		boolean flag = false;
 		try {
 			id = Integer.parseInt(idStr);
 		} catch (NumberFormatException e) {
@@ -145,13 +157,123 @@ public class BookServlet extends HttpServlet {
 		req.getRequestDispatcher("/WEB-INF/jsps/emptycart.jsp").forward(req, resp);
 	}
 	
+	protected void cash(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+		// 1. 简单验证：不需要经过数据库或者调用数据库的方法，例如是否是email，是否为int类型
+		String username = req.getParameter("username");
+		String accountId = req.getParameter("accountId");
+		
+		StringBuilder errors = validateFormField(username, accountId);
+		
+		// 表单验证通过
+		if (errors.toString().equals("")) {
+			errors = validateUser(username, accountId);
+			// 用户合法性验证通过
+			if (errors.toString().equals("")) {
+				errors = validateBookStoreNumber(req);
+				// 库存验证通过
+				if (errors.toString().equals("")) {
+					// 验证余额
+					errors = validateBalance(accountId,req);
+				}
+			}
+		}
+		
+		if (!errors.toString().equals("")) {
+			req.setAttribute("errors", errors);
+			req.getRequestDispatcher("/WEB-INF/jsps/cash.jsp").forward(req, resp);
+			return;
+		}
+		
+		// 验证通过执行结账操作
+		BookService bookService = new BookService();
+		bookService.cash(BookStoreWebUtils.getShoppingCart(req),username,accountId);
+		req.getRequestDispatcher("/success.jsp").forward(req, resp);
+	}
+
+	/**
+	 * 余额充足？
+	 * @param accountId
+	 * @return
+	 */
+	private StringBuilder validateBalance(String accountId,HttpServletRequest request) {
+		
+		StringBuilder errors = new StringBuilder();
+		
+		ShoppingCart sc = BookStoreWebUtils.getShoppingCart(request);
+		Account account = new AccountService().getAccount(Integer.parseInt(accountId));
+		if (sc.getTotalMoney() > account.getBalance()) {
+			errors.append("余额不足");
+		}
+		
+		return errors;
+	}
+	
+	/**
+	 * 验证库存是否充足
+	 * @return
+	 */
+	private StringBuilder validateBookStoreNumber(HttpServletRequest request) {
+		
+		StringBuilder errors = new StringBuilder();
+		
+		ShoppingCart sc = BookStoreWebUtils.getShoppingCart(request);
+		for(ShoppingCartItem sci : sc.getItems()){
+			int quantity = sci.getQuantity();
+			int storeNumber = new BookService().getBook(sci.getBook().getId()).getStoreNumber();
+			if (quantity > storeNumber) {
+				errors.append(sci.getBook().getTitle() + "库存不足");
+			}
+		}
+		return errors;
+	}
+	
+	/**
+	 *  验证用户名和账号是否匹配
+	 * @param username
+	 * @param accountId
+	 * @return
+	 */
+	private StringBuilder validateUser(String username, String accountId) {
+		boolean flag = false;
+		UserService userService = new UserService();
+		User user = userService.getUserByUsername(username);
+		if (user != null) {
+			int accountId2 = user.getAccountId();
+			if ((accountId2 + "").trim().equals(accountId)) {
+				flag = true;
+			}
+		} 
+		StringBuilder errors2 = new StringBuilder();
+		if (!flag) {
+			errors2.append("用户名和账号不匹配！");
+		}
+		return errors2;
+	}
+	
+	/**
+	 * 验证表单域是否非空
+	 * @param username
+	 * @param accountId
+	 * @return
+	 */
+	private StringBuilder validateFormField(String username, String accountId) {
+		
+		StringBuilder errors = new StringBuilder();
+		if (null == username || "".equals(username.trim())) {
+			errors.append("用户名不能为空<br />");
+		}
+		if (null == accountId || "".equals(accountId.trim())) {
+			errors.append("账号不能为空");
+		}
+		return errors;
+	}
+	
 	protected void updateItemQuantity(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
 		
 		String idStr = req.getParameter("id");
 		String quantityStr = req.getParameter("quantity");
 		
 		int id = -1,quantity = -1;
-		boolean flag = false;
 		try {
 			id = Integer.parseInt(idStr);
 			quantity = Integer.parseInt(quantityStr);
@@ -183,6 +305,7 @@ public class BookServlet extends HttpServlet {
 			method.invoke(this, req,resp);
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
 		
 	}

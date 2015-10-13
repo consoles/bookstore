@@ -8,7 +8,7 @@ public interface AccountDao {
 	 * @param accountId
 	 * @return
 	 */
-	public abstract Account get(Integer accountId) throws Exception;
+	public abstract Account get(Integer accountId);
 	
 	/**
 	 * 根据传入的 accountId, amount 更新指定账户的余额: 扣除 amount 指定的钱数
@@ -16,5 +16,5 @@ public interface AccountDao {
 	 * @param amount
 	 * @throws Exception
 	 */
-	public abstract void updateBalance(Integer accountId,float amount) throws Exception;
+	public abstract void updateBalance(Integer accountId,float amount);
 }

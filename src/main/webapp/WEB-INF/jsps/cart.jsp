@@ -44,7 +44,7 @@
 	</table>
 	<a href="books.do?method=clear&pageNo=${bookpage.pageNo }&id=${item.book.id }">清空购物车</a>
 	<a href="books.do?method=getBooks&pageNo=${param.pageNo }">继续购物</a>
-	<a href="">结账</a>
+	<a href="books.do?method=forwardPage&destPage=cash.jsp">结账</a>
 	<br />
 	<br />
 <script src="static/js/jquery-2.1.1.js"></script>

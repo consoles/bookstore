@@ -1,9 +1,14 @@
 package org.gpf.bookstore.dao;
 
-import static org.junit.Assert.*;
+import java.sql.Connection;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import org.gpf.bookstore.dao.impl.BookDaoImpl;
+import org.gpf.bookstore.db.JDBCUtils;
 import org.gpf.bookstore.domain.Book;
+import org.gpf.bookstore.domain.ShoppingCartItem;
+import org.gpf.bookstore.web.ConnectionContext;
 import org.gpf.bookstore.web.CriteriaBook;
 import org.gpf.bookstore.web.Page;
 import org.junit.Before;
@@ -15,6 +20,8 @@ public class BookDaoTest {
 	
 	@Before
 	public void setUp() throws Exception {
+		Connection connection = JDBCUtils.getConnection();
+		ConnectionContext.getInstance().bind(connection);
 		bookDao = new BookDaoImpl();
 	}
 
@@ -56,7 +63,23 @@ public class BookDaoTest {
 
 	@Test
 	public void testBatchUpdateStoreNumberAndSalesAmount() {
-		fail("Not yet implemented");
+		
+		Collection<ShoppingCartItem> scis = new ArrayList<>();
+		
+		Book book = bookDao.getBook(1);
+		ShoppingCartItem sci = new ShoppingCartItem(book);
+		sci.setQuantity(10);
+		scis.add(sci);
+		book = bookDao.getBook(2);
+		sci = new ShoppingCartItem(book);
+		sci.setQuantity(20);
+		scis.add(sci);
+		book = bookDao.getBook(3);
+		sci = new ShoppingCartItem(book);
+		sci.setQuantity(30);
+		scis.add(sci);
+		
+		bookDao.batchUpdateStoreNumberAndSalesAmount(scis);
 	}
 
 }
