@@ -21,6 +21,12 @@
 	</form>
 	<br />
 	<br />
+	<c:if test="${param.title != null }">
+		您已经将${param.title }放入到购物车中！
+	</c:if>
+	<c:if test="${!empty sessionScope.ShoppingCart.books }">
+		您的购物车中有${sessionScope.ShoppingCart.bookNumber }本书，<a href="books.do?method=toCartPage&pageNo=${bookpage.pageNo }">查看购物车</a>
+	</c:if>
 	<table>
 		<c:forEach items="${bookpage.list }" var="book">
 			<tr>
@@ -28,7 +34,7 @@
 					href="books.do?method=getBook&pageNo=${bookpage.pageNo }&id=${book.id }">${book.title
 						}</a><br> ${book.author }</td>
 				<td>${book.price }</td>
-				<td><a href="">加入购物车</a></td>
+				<td><a href="books.do?method=addToCart&pageNo=${bookpage.pageNo }&id=${book.id }&title=${book.title }">加入购物车</a></td>
 			</tr>
 		</c:forEach>
 	</table>

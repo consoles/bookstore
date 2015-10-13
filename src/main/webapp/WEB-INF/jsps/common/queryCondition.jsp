@@ -10,12 +10,14 @@
 <script>
 	$(function() {
 		// 保存查询条件
-		$('a').click(function() {
-			var $serializeVal = $(':hidden').serialize();
-			var href = this.href + '&' + $serializeVal;
-			console.log(href);
-			window.location.href = href;
-			return false; // 必加
+		$('a').each(function(){
+			this.onclick = function(){
+				var $serializeVal = $(':hidden').serialize();
+				var href = this.href + '&' + $serializeVal;
+				console.log(href);
+				window.location.href = href;
+				return false; // 阻止默认事件
+			}
 		});
 
 		// 转到多少页

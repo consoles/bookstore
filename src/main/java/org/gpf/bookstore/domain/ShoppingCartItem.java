@@ -1,8 +1,15 @@
 package org.gpf.bookstore.domain;
-
+/**
+ * 
+* @ClassName: ShoppingCartItem 
+* @Description: 购物车中的购物项
+* @author gaopengfei
+* @date 2015-10-13 上午9:18:21 
+*
+ */
 public class ShoppingCartItem {
-	private Book book;
-	private int quantity;
+	private Book book; // 书
+	private int quantity; // 书的数量
 
 	public ShoppingCartItem(Book book) {
 		this.book = book;
@@ -23,8 +30,6 @@ public class ShoppingCartItem {
 
 	/**
 	 * 返回该商品在购物车中的钱数
-	 * 
-	 * @return
 	 */
 	public float getItemMoney() {
 		return book.getPrice() * quantity;

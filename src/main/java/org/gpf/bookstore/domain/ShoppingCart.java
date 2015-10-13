@@ -3,9 +3,19 @@ package org.gpf.bookstore.domain;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
+/**
+ * 
+* @ClassName: ShoppingCart 
+* @Description: 购物车 
+* @author gaopengfei
+* @date 2015-10-13 上午9:19:52 
+*
+ */
 public class ShoppingCart {
 
+	/**
+	 * 购物车采用hashMap，键是书的id，值是购物项（书名，价格）
+	 */
 	private Map<Integer, ShoppingCartItem> books = new HashMap<>();
 
 	/**
