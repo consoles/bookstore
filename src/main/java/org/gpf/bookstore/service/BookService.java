@@ -97,7 +97,7 @@ public class BookService {
 		tradeDao.insert(trade);
 
 		// 假设在此处发生了异常，则事务应该回滚
-		int tmp = 10 / 0;
+//		int tmp = 10 / 0;
 		
 		// 4.向tradeitem表中插入n条记录
 		Collection<TradeItem> items = new ArrayList<>();

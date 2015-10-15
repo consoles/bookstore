@@ -20,7 +20,7 @@ public class BookDaoImpl extends BaseDao<Book> implements BookDao{
 
 	@Override
 	public Page<Book> getPage(CriteriaBook cb) {
-		Page page = new Page(cb.getPageNo());
+		Page<Book> page = new Page<Book>(cb.getPageNo());
 		page.setTotalItemNumber(getTotalBookNumber(cb));
 		// 检验pageNo的合法性
 		cb.setPageNo(page.getPageNo());

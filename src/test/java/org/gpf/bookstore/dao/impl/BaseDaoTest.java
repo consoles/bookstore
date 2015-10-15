@@ -12,7 +12,7 @@ import org.junit.Test;
 
 public class BaseDaoTest {
 
-	private BaseDao baseDao;
+	private BaseDao<Book> baseDao;
 	
 	@Before
 	public void setUp() throws Exception {

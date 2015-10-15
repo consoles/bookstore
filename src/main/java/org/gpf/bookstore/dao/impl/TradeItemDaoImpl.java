@@ -13,7 +13,7 @@ public class TradeItemDaoImpl extends BaseDao<TradeItem> implements
 		TradeItemDao {
 
 	@Override
-	public Set<TradeItem> getTradesWithUserId(Integer tradeId) {
+	public Set<TradeItem> getTradeItemsWithTradeId(Integer tradeId) {
 
 		String sql = "SELECT itemid tradeItemId,bookId,quantity,tradeId FROM tradeitem WHERE tradeid = ?";
 		return new HashSet<>(queryForList(sql, tradeId));

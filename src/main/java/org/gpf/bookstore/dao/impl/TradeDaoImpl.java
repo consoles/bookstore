@@ -1,6 +1,6 @@
 package org.gpf.bookstore.dao.impl;
 
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import org.gpf.bookstore.dao.TradeDao;
@@ -17,8 +17,8 @@ public class TradeDaoImpl  extends BaseDao<Trade> implements TradeDao {
 
 	@Override
 	public Set<Trade> getTradesWithUserId(Integer userId) {
-		String sql = "SELECT tradeid,userid,tradetime FROM trade WHERE userid = ?";
-		return new HashSet<>(queryForList(sql, userId));
+		String sql = "SELECT tradeid,userid,tradetime FROM trade WHERE userid = ? ORDER BY tradetime DESC";
+		return new LinkedHashSet<>(queryForList(sql, userId));
 	}
 
 }

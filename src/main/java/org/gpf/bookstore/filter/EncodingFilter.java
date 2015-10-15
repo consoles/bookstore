@@ -10,7 +10,14 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.annotation.WebInitParam;
-
+/**
+ * 
+* @ClassName: EncodingFilter 
+* @Description: 处理页面编码的过滤器
+* @author gaopengfei
+* @date 2015-10-14 下午2:47:10 
+*
+ */
 @WebFilter(asyncSupported=true,urlPatterns={"/*"},initParams={@WebInitParam(name="encoding",value="utf-8")})
 public class EncodingFilter implements Filter{
 

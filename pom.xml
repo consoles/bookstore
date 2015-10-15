@@ -1,14 +1,70 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+
 	<groupId>org.gpf</groupId>
 	<artifactId>bookstore</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<packaging>war</packaging>
-	<name />
-	<description />
+
+	<name>bookstore</name>
+	<url>http://139.129.12.12:8080/bookstore</url>
+	<description>基于JDBC+Servlet+Service+DAO的网上书城项目</description>
+	<inceptionYear>2015</inceptionYear>
+	<mailingLists>
+		<mailingList>
+			<name>大梦初晓</name>
+			<post>1362955042@qq.com</post>
+			<subscribe>1362955042@qq.com</subscribe>
+			<unsubscribe>1362955042@qq.com</unsubscribe>
+			<archive>http://139.129.12.12</archive>
+		</mailingList>
+	</mailingLists>
+	<developers>
+		<developer>
+			<email>1362955042@qq.com</email>
+			<id>大梦初晓</id>
+			<url>http://139.129.12.12</url>
+			<name>大梦初晓</name>
+			<roles>
+				<role>main</role>
+			</roles>
+			<timezone>+8</timezone>
+		</developer>
+	</developers>
+	<licenses>
+		<license>
+			<name>Apache 2</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0</url>
+			<!--项目分发的主要方式： repo，可以从Maven库下载 manual， 用户必须手动下载和安装依赖 -->
+			<distribution>manual</distribution>
+			<comments>A business-friendly OSS license</comments>
+		</license>
+	</licenses>
+	<!--SCM(Source Control Management)标签允许你配置你的代码库，供Maven web站点和其它插件使用。 -->
+	<scm>
+		<!--SCM的URL,该URL描述了版本库和如何连接到版本库。欲知详情，请看SCMs提供的URL格式和列表。该连接只读。 -->
+		<connection>     
+            scm:git:https://git.oschina.net/gaopengfei/bookstore.git      
+        </connection>
+		<!--给开发者使用的，类似connection元素。即该连接不仅仅只读 -->
+		<developerConnection>     
+            scm:git:https://git.oschina.net/gaopengfei/bookstore.git
+        </developerConnection>
+		<!--当前代码的标签，在开发阶段默认为HEAD -->
+		<tag />
+		<!--指向项目的可浏览SCM库（例如ViewVC或者Fisheye）的URL。 -->
+		<url>https://git.oschina.net/gaopengfei/bookstore.git</url>
+	</scm>
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<c3p0.version>0.9.1.2</c3p0.version>
+		<commons-dbutils.version>1.6</commons-dbutils.version>
+		<mysql.version>5.1.18</mysql.version>
+		<fastjson.version>1.2.5</fastjson.version>
+		<junit.version>4.10</junit.version>
+		<jetty.version>9.2.8.v20150217</jetty.version>
+		<dom4j.version>1.6.1</dom4j.version>
 	</properties>
 	<dependencies>
 		<dependency>
@@ -44,30 +100,56 @@
 			<version>3.0.1</version>
 		</dependency>
 		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
 			<groupId>c3p0</groupId>
 			<artifactId>c3p0</artifactId>
-			<version>0.9.1.2</version>
+			<version>${c3p0.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>commons-dbutils</groupId>
 			<artifactId>commons-dbutils</artifactId>
-			<version>1.6</version>
+			<version>${commons-dbutils.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>
-			<version>5.1.18</version>
+			<version>${mysql.version}</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>fastjson</artifactId>
-			<version>1.2.5</version>
+			<version>${fastjson.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>dom4j</groupId>
+			<artifactId>dom4j</artifactId>
+			<version>${dom4j.version}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.3.2</version>
 		</dependency>
 	</dependencies>
 	<build>
 		<plugins>
 			<plugin>
 				<artifactId>maven-war-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>${jetty.version}</version>
 			</plugin>
 			<plugin>
 				<artifactId>maven-compiler-plugin</artifactId>

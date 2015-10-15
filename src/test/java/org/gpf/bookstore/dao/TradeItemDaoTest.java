@@ -33,7 +33,7 @@ public class TradeItemDaoTest {
 
 	@Test
 	public void testGetTradesWithUserId() {
-		Set<TradeItem>items = tradeItemDao.getTradesWithUserId(12);
+		Set<TradeItem>items = tradeItemDao.getTradeItemsWithTradeId(12);
 		System.out.println(items);
 	}
 

@@ -95,12 +95,13 @@ public class BaseDao<T> implements Dao<T> {
 		return null;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public <V> V getSingleVal(String sql, Object... args) {
 		Connection connection = null;
 		try {
 			connection = ConnectionContext.getInstance().get();
-			return (V) queryRunner.query(connection, sql, new ScalarHandler(), args);
+			return (V) queryRunner.query(connection, sql, new ScalarHandler<Object>(), args);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

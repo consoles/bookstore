@@ -1,12 +1,6 @@
 <%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
-<%
-	String path = request.getContextPath();
-	String basePath = request.getScheme() + "://"
-			+ request.getServerName() + ":" + request.getServerPort()
-			+ path + "/";
-%>
-
-<script src="static/js/jquery-2.1.1.js"></script>
+<%@ include file="/WEB-INF/jsps/common/common.jsp" %>
+<script src="static/common-lib/jquery/jquery-2.1.1.js"></script>
 <script>
 	$(function() {
 		// 保存查询条件
@@ -17,7 +11,7 @@
 				console.log(href);
 				window.location.href = href;
 				return false; // 阻止默认事件
-			}
+			};
 		});
 
 		// 转到多少页
@@ -51,7 +45,7 @@
 			}
 		}
 		return flag;
-	}
+	};
 </script>
 <!-- 隐藏域，翻页时保存查询条件 -->
 <input type="hidden" name="minPrice" value="${param.minPrice }" />

@@ -25,7 +25,7 @@ import org.gpf.bookstore.web.Page;
 
 import com.alibaba.fastjson.JSONObject;
 
-@WebServlet(asyncSupported=true,urlPatterns={"/books.do"})
+@WebServlet("/books.do")
 public class BookServlet extends HttpServlet {
 
 	private static final long serialVersionUID = -6832343822821250410L;
@@ -81,7 +81,7 @@ public class BookServlet extends HttpServlet {
 		}
 		
 		if (book == null) {
-			response.sendRedirect(request.getContextPath() + "/error-1.jsp");
+			response.sendRedirect(request.getContextPath() + "/error.jsp");
 			return;
 		}
 		request.setAttribute("book", book);
@@ -113,7 +113,7 @@ public class BookServlet extends HttpServlet {
 			getBooks(req, resp);
 			return;
 		}
-		resp.sendRedirect(req.getContextPath() + "/error-1.jsp");
+		resp.sendRedirect(req.getContextPath() + "/error.jsp");
 		
 	}
 	

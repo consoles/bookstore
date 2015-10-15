@@ -10,12 +10,21 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.gpf.bookstore.db.JDBCUtils;
 import org.gpf.bookstore.web.ConnectionContext;
-
+/**
+ * 
+* @ClassName: TransactionFilter 
+* @Description: 事务过滤器（将数据库连接和当前线程绑定）
+* @author gaopengfei
+* @date 2015-10-14 下午2:48:02 
+*
+ */
+@WebFilter(asyncSupported=true,urlPatterns={"/*"})
 public class TransactionFilter implements Filter{
 
 	@Override
@@ -49,7 +58,7 @@ public class TransactionFilter implements Filter{
 			// 重定向到错误页
 			HttpServletRequest req = (HttpServletRequest) request;
 			HttpServletResponse resp = (HttpServletResponse) response;
-			resp.sendRedirect("/error-1.jsp");
+			resp.sendRedirect(req.getContextPath() + "/error.jsp");
 		} finally {
 			// 关闭连接
 			JDBCUtils.release(connection);
